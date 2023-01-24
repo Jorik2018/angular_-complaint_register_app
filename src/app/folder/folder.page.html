@@ -1,21 +1,188 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>{{ folder }}</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>{{ folder }}</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">{{ folder }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
+	<ion-header collapse="condense">
+		<ion-toolbar>
+			<ion-title size="large">{{ folder }}</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<div id="container">
+		<ng-template [ngIf]="!sended">
+		<ion-item-group>
+			<ion-item-divider>
+				<ion-label>
+					I. DATOS DEL DENUNCIANTE
+				</ion-label>
+			</ion-item-divider>
+			<ion-item>
+				<ion-label position="stacked">1. Denuncia anonima?</ion-label>
+				<ion-select placeholder="Select Opción" [(ngModel)]="o.anonimo">
+				  <ion-select-option value="1">SI</ion-select-option>
+				  <ion-select-option value="0">NO</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">1. Descripción de la denuncia{{o.type}}</ion-label>
+				<ion-radio-group [(ngModel)]="o.type">
+				<ion-item *ngFor="let item of types">
+					<ion-label>{{item.name}}-{{item.description}}</ion-label>
+					<ion-radio slot="end" [value]="item.name"></ion-radio>
+				</ion-item>
+				</ion-radio-group>
+			</ion-item>
+			<ng-template [ngIf]="o.anonimo==='0'">
+			<ion-item>
+				<ion-label position="stacked">2. Tipo de Persona</ion-label>
+				<ion-select placeholder="Select Opción" [(ngModel)]="o.tipopersona">
+				  <ion-select-option value="DNI">NATURAL</ion-select-option>
+				  <ion-select-option value="RUC">JURIDICA</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">3. Tipo de Documento</ion-label>
+				<ion-select placeholder="Select fruit" [(ngModel)]="o.tipodocumento">
+				  <ion-select-option value="DNI">DNI</ion-select-option>
+				  <ion-select-option value="RUC">RUC</ion-select-option>
+				  <ion-select-option value="CARNET DE EXTRANJERIA">CARNET DE EXTRANJERIA</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">4. Número de Documento</ion-label>
+				<ion-input [(ngModel)]="o.nrodocumento"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">5. Apellidos y Nombres y/o Razón Social</ion-label>
+				<ion-input [(ngModel)]="o.apenombres"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">6. Representante Legal</ion-label>
+				<ion-input [(ngModel)]="o.representante"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">7. Domicilio Real o Procesal</ion-label>
+				<ion-input [(ngModel)]="o.domicilio"></ion-input>
+			</ion-item>
+			</ng-template>
+			<ion-item>
+				<ion-label position="stacked">8. Teléfono</ion-label>
+				<ion-input [(ngModel)]="o.telefono"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">9. Correo Electrónico</ion-label>
+				<ion-input [(ngModel)]="o.email"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">10. Es Servidor/a de la Gobierno Regional de Ancash?</ion-label>
+				<ion-select placeholder="Select Opción" [(ngModel)]="o.funcionario">
+				  <ion-select-option value="1">SI</ion-select-option>
+				  <ion-select-option value="0">NO</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">11. Órgano en que labora</ion-label>
+				<ion-input [(ngModel)]="o.organo"></ion-input>
+			</ion-item>
+			<ion-item>
+				<ion-label position="stacked">12. Cargo que desempeña</ion-label>
+				<ion-input [(ngModel)]="o.cargo"></ion-input>
+			</ion-item>  
+			<ion-item>
+				<ion-label position="stacked">13. Vínculo con el/los denunciado/s</ion-label>
+				<ion-textarea maxlength="500" [autoGrow]="true" [(ngModel)]="o.vinculo"></ion-textarea>
+			</ion-item> 
+		</ion-item-group>
+		<ion-item-group>
+			<ion-item-divider>
+				<ion-label>
+					II. DATOS DEL DENUNCIADO/A
+				</ion-label>
+			</ion-item-divider>
+			<ion-item>
+				<ion-label position="stacked">14. Especificar los Nombres y Apellidos</ion-label>
+				<ion-input [(ngModel)]="o.apenombresdenunciado"></ion-input>
+			</ion-item> 
+			<ion-item>
+				<ion-label position="stacked">15. Especificar Cargo que desempeña</ion-label>
+				<ion-input [(ngModel)]="o.cargodenunciado"></ion-input>
+			</ion-item> 
+		</ion-item-group>
+		<ion-item-group>
+			<ion-item-divider>
+				<ion-label>
+					III. DESCRIPCIÓN DE LOS HECHOS DENUNCIADOS
+				</ion-label>
+			</ion-item-divider>
+			<ion-item>
+				<ion-label position="stacked">16. .(En este Ítem el recurrente deberá consignar los actos materia de denuncia, estos
+deben ser expuestos en forma detallada y coherente, incluyendo la identificación de los
+autores de los hechos denunciados de conocerte)</ion-label>
+				<ion-textarea [(ngModel)]="o.deschechos" maxlength="1000" [autoGrow]="true"></ion-textarea>
+			</ion-item> 
+		</ion-item-group>
+		<ion-item-group>
+			<ion-item-divider>
+				<ion-label>
+					IV. DOCUMENTACIÓN PROBATORIA
+				</ion-label>
+			</ion-item-divider>
+			<ion-item>
+				<ion-label position="stacked">17. .(La denuncia podrá acompañarse de documentación original o copia que le de
+sustento. De no contar con documentación que acredite la comisión del acto de
+corrupción, se debe indicar el órgano que cuente con dicha documentación)</ion-label>
+				<ion-input ></ion-input>
+			</ion-item> 
+			<ion-item>
+				<ion-label position="stacked">18. Documentación Probatoria
+Peso máximo: 10 MB en total, solo se aceptan formatos rar, zip, mp3, wma, mp4, wmv,
+pdf, doc, docx, txt, xls, xlsx, xlsm, csv, jpg, jpeg, png, tif y bmp.</ion-label>
 
-  <div id="container">
-    <strong class="capitalize">{{ folder }}</strong>
-    <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<div *ngIf="o.fileName" [ngStyle]="{marginTop: 12,fontSize: 12}">Archivo: {{o.fileName}}</div>
+
+				<div class="uploader" appDnd (fileDropped)="onFileDropped($event)">
+					<input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event)" />
+					<img src="assets/img/dnd/ic-upload-file.svg" alt="">
+					<h3>Arrastra y suelta el archivo aquí</h3>
+					<h3>or</h3>
+					<label for="fileDropRef">Buscar archivo</label>
+				</div>
+			</ion-item> 
+		</ion-item-group>
+		<ion-item>
+			<ion-checkbox slot="start" [(ngModel)]="o.aceptado"></ion-checkbox>
+			<ion-label>Declaro bajo juramento que los datos ingresados en este formulario son verdaderos y
+están sujetos a lo establecido en los articulos 51 y 67 del TUO de la Ley N° 27444</ion-label>
+		</ion-item>
+		<ion-item>
+			<ion-button [disabled]="!o.aceptado" fill="solid" (click)="send()">
+				<ion-icon slot="end" name="send"></ion-icon>
+				Enviar
+			</ion-button>
+		</ion-item> 
+		</ng-template>
+		
+		<ng-template [ngIf]="sended">
+		
+		<ion-card>
+			<ion-card-header>
+				<ion-card-title>Denuncia recepcionana correctamente!</ion-card-title>
+			</ion-card-header>
+			<ion-card-content>
+				codigo={{o.code}}
+			</ion-card-content>
+		</ion-card>
+		<ion-item>
+			<ion-button [disabled]="!o.aceptado" fill="solid" (click)="sended=false">
+				<ion-icon slot="start" name="pencil"></ion-icon>
+				Registrar una nueva denuncia.
+			</ion-button>
+		</ion-item> 
+		</ng-template>
+	</div>
 </ion-content>
