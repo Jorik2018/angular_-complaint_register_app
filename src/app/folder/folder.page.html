@@ -218,13 +218,13 @@
 					<ion-card-title>Denuncia Registrada Exitosamente!</ion-card-title>
 				</ion-card-header>
 				<ion-card-content>
-					{{o.code}}
+					<p ng-bind-html="o.code"></p>
 					<br><br>
 					Gobierno Regional de Ancash - Trasparencia.
 				</ion-card-content>
 			</ion-card>
 			<ion-item>
-				<ion-button [disabled]="!o.aceptado" fill="solid" (click)="sended=false">
+				<ion-button [disabled]="!o.aceptado" fill="solid" (click)="sended=false;o={}">
 					<ion-icon slot="start" name="pencil"></ion-icon>
 					Registrar una nueva denuncia.
 				</ion-button>
