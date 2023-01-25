@@ -51,7 +51,7 @@ export class FolderPage implements OnInit {
 	changeOficina() {
 		var me = this;
 
-		me.http.get('environment.APP_BASE_URL+/api/denuncia/api/personal/' + this.o.oficina).subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/personal/' + this.o.oficina).subscribe(data => {
 			me.personals = (data as any[]);
 			console.log(data);
 		}, (error) => {
