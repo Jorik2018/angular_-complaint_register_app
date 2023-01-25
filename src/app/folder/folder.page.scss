@@ -6,7 +6,7 @@ ion-menu-button {
 ion-input,
 ion-textarea {
   margin-top: 10px;
-  border: 1px solid #b1b1b1;
+  border: 1px solid #0f62ac;
   padding: 10px;
   border-radius: 5px;
 }
@@ -16,9 +16,9 @@ ion-textarea {
   font-weight: bold;
 }
 
-.alert-radio-label.sc-ion-alert-md {
-  white-space: unset;
-  width: 100px;
+.fixedLabel {
+  min-width: 50% !important;
+  max-width: 50% !important;
 }
 
 ion-item-group>ion-item-divider {

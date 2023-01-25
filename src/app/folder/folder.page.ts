@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders, HttpEventType, HttpParams } from '@angular/com
 import { LoadingController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../environments/environment';
+
 @Component({
 	selector: 'app-folder',
 	templateUrl: './folder.page.html',
@@ -28,14 +30,14 @@ export class FolderPage implements OnInit {
 
 	ngOnInit() {
 		var me = this;
-		me.http.get('http://127.0.0.1:8000/api/motivo').subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/motivo').subscribe(data => {
 			me.types = (data as any[]);
 			console.log(data);
 		}, (error) => {
 			console.log(error);
 		})
 
-		me.http.get('http://127.0.0.1:8000/api/oficina').subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/oficina').subscribe(data => {
 			me.oficinas = (data as any[]);
 			console.log(data);
 		}, (error) => {
@@ -46,10 +48,10 @@ export class FolderPage implements OnInit {
 	constructor(private http: HttpClient, private loadingCtrl: LoadingController, private toastr: ToastrService) { }
 
 
-	changeOficina(){
+	changeOficina() {
 		var me = this;
 
-		me.http.get('http://127.0.0.1:8000/api/personal/'+this.o.oficina).subscribe(data => {
+		me.http.get('environment.APP_BASE_URL+/api/denuncia/api/personal/' + this.o.oficina).subscribe(data => {
 			me.personals = (data as any[]);
 			console.log(data);
 		}, (error) => {
@@ -151,7 +153,7 @@ export class FolderPage implements OnInit {
 		const loading = await this.loadingCtrl.create({ message: 'Enviando...', });
 		loading.present();
 		console.log(me.o);
-		me.http.post<any>('http://127.0.0.1:8000/api/addDenuncia', me.o).subscribe(data => {
+		me.http.post<any>(environment.APP_BASE_URL + '/api/denuncia/api/addDenuncia', me.o).subscribe(data => {
 			if (data.result == 1) {
 				loading.dismiss();
 				me.sended = true;
