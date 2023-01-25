@@ -17,7 +17,7 @@ import { APP_BASE_HREF } from '@angular/common';
   declarations: [AppComponent, DndDirective],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, BrowserAnimationsModule, ToastrModule.forRoot()],
   providers: [
-    { provide: APP_BASE_HREF, useValue: '/denuncias' },
+    { provide: APP_BASE_HREF, useValue: '/denuncia' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],
