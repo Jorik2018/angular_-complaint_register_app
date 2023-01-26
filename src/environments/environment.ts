@@ -14,7 +14,7 @@ export const environment = {
 	API_KEY: '1234_API_KEY_5678',
 	ANOTHER_API_SECRET: '_ANOTHER_SECRET_',
 	APP_BASE_URL:'https://web.regionancash.gob.pe',
-	// APP_BASE_URL:'http://localhost:4200/',
+	// APP_BASE_URL:'http://localhost:8000',
 	BASE_HREF:'/denuncia',
 	APP_OAUTH_URL:'https://web.regionancash.gob.pe/api/oauth'
    

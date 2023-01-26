@@ -5,17 +5,18 @@
 		</ion-buttons>
 		<ion-grid>
 			<ion-row class="ion-align-items-center">
-				<ion-col offset-md="1" size="2" [ngStyle]="{textAlign: 'center'}">
-					<ion-img [ngStyle]="{maxWidth: '10em'}" src="https://guias.servicios.gob.pe/static/imagenes/logo_primario.svg"
+				<ion-col size="2" [ngStyle]="{textAlign: 'center'}">
+					<ion-img [ngStyle]="{maxWidth: '10em'}"
+						src="https://guias.servicios.gob.pe/static/imagenes/logo_primario.svg"
 						alt="Logo del Gob.pe"></ion-img>
 				</ion-col>
-				<ion-col size="6" [ngStyle]="{textAlign: 'center'}">
-					<ion-title [ngStyle]="{color: '#ffffff', fontWeight: 'bold', fontSize: '25px'}">{{ folder
-						}}</ion-title>
+				<ion-col size="8" [ngStyle]="{textAlign: 'center'}">
+					<ion-label [ngStyle]="{color: '#ffffff', fontWeight: 'bold', fontSize: '25px'}">{{ folder
+						}}</ion-label>
 				</ion-col>
-				<ion-col offset-md="1" size="2" [ngStyle]="{textAlign: 'center'}">
-					<ion-img [ngStyle]="{maxWidth: '8em', borderRadius: '5px'}" src="https://www.regionancash.gob.pe/images/logo2018.png"
-						alt="Logo del GORE Áncash"></ion-img>
+				<ion-col size="2" [ngStyle]="{textAlign: 'center'}">
+					<ion-img [ngStyle]="{maxWidth: '8em', borderRadius: '5px'}"
+						src="https://www.regionancash.gob.pe/images/logo2018.png" alt="Logo del GORE Áncash"></ion-img>
 				</ion-col>
 			</ion-row>
 		</ion-grid>
@@ -23,10 +24,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-	<ion-header [ngStyle]="{paddingBottom: '20px'}">
-		<ion-toolbar>
-			<ion-title size="large" [ngStyle]="{textAlign:'center', color: 'red', fontWeight: 'bold'}">DENUNCIA UN
-				PRESUNTO ACTO DE CORRUPCIÓN</ion-title>
+	<ion-header [ngStyle]="{paddingBottom: '10px', paddingTop: '10px'}">
+		<ion-toolbar [ngStyle]="{textAlign:'center', color: 'red', fontWeight: 'bold',fontSize: '20px'}">
+			<ion-label size="large">DENUNCIA UN
+				PRESUNTO ACTO DE CORRUPCIÓN</ion-label>
 		</ion-toolbar>
 		<ion-item>
 			<ion-label position="stacked">Si necesitas denunciar un posible
@@ -161,27 +162,28 @@
 					</ion-select>
 				</ion-item>
 
-				<ion-item>
-					<ion-label position="stacked" class="title-opcion">16. Seleccione Personal a Denunciar<span
+				<!-- <ion-item>
+					<ion-label position="stacked" class="title-opcion">16. Ingrese los Apellidos y Nombres del Denunciado/a<span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
-					<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.personal"
+					<ion-input [(ngModel)]="o.personal"></ion-input>
+					 <ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.personal"
 						[ngStyle]="{marginTop:'10px'}">
 						<ion-select-option *ngFor="let item of personals" [value]="item.id">{{item.apenombres}} --
 							{{item.cargo}}</ion-select-option>
-					</ion-select>
-				</ion-item>
+					</ion-select> 
+				</ion-item> -->
 
-				<!-- <ion-item>
-					<ion-label position="stacked" class="title-opcion">15. Especificar los Nombres y
+				<ion-item>
+					<ion-label position="stacked" class="title-opcion">16. Especificar los Nombres y
 						Apellidos <span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
 					<ion-input [(ngModel)]="o.apenombresdenunciado"></ion-input>
 				</ion-item>
 				<ion-item>
-					<ion-label position="stacked" class="title-opcion">16. Especificar Cargo que desempeña <span
+					<ion-label position="stacked" class="title-opcion">17. Especificar Cargo que desempeña <span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
 					<ion-input [(ngModel)]="o.cargodenunciado"></ion-input>
-				</ion-item> -->
+				</ion-item>
 
 			</ion-item-group>
 			<ion-item-group>
@@ -191,7 +193,7 @@
 					</ion-label>
 				</ion-item-divider>
 				<ion-item>
-					<ion-label position="stacked" class="title-opcion">17. (En este Ítem el recurrente deberá consignar
+					<ion-label position="stacked" class="title-opcion">18. (En este Ítem el recurrente deberá consignar
 						los actos materia de denuncia, estos deben ser expuestos en forma detallada y coherente,
 						incluyendo la identificación de los autores de los hechos denunciados de conocerte) <span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
