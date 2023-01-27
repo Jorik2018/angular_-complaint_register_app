@@ -15,8 +15,8 @@
 						}}</ion-label>
 				</ion-col>
 				<ion-col size="2" [ngStyle]="{textAlign: 'center'}">
-					<ion-img [ngStyle]="{maxWidth: '8em', borderRadius: '5px'}"
-						src="https://www.regionancash.gob.pe/images/logo2018.png" alt="Logo del GORE Áncash"></ion-img>
+					<ion-img [ngStyle]="{maxWidth: '8em'}" src="https://www.regionancash.gob.pe/images/logo2018.png"
+						alt="Logo del GORE Áncash"></ion-img>
 				</ion-col>
 			</ion-row>
 		</ion-grid>
@@ -29,7 +29,7 @@
 			<ion-label size="large">DENUNCIA UN
 				PRESUNTO ACTO DE CORRUPCIÓN</ion-label>
 		</ion-toolbar>
-		<ion-item>
+		<ion-item class="container">
 			<ion-label position="stacked">Si necesitas denunciar un posible
 				acto de corrupción o falta de ética cometida por personal del <b>GOBIERNO REGIONAL DE ÁNCASH</b>, puedes
 				hacerlo
@@ -46,7 +46,7 @@
 						I. DATOS DEL DENUNCIANTE
 					</ion-label>
 				</ion-item-divider>
-				<ion-item>
+				<ion-item class="container">
 					<ion-label position="stacked" class="title-opcion">1. Denuncia anonima? <span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
 					<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.anonimo"
@@ -55,13 +55,94 @@
 						<ion-select-option value="1">SI</ion-select-option>
 					</ion-select>
 				</ion-item>
-				<ion-item>
-					<ion-label position="stacked" class="title-opcion">2. Motivo de la denuncia <span
+				<ng-template [ngIf]="o.anonimo==='0'">
+					<ion-item class="container">
+						<ion-label position="stacked" class="title-opcion">2. Tipo de Persona</ion-label>
+						<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.tipopersona"
+							[ngStyle]="{marginTop:'10px'}">
+							<ion-select-option value="DNI">NATURAL</ion-select-option>
+							<ion-select-option value="JURIDICA">JURIDICA</ion-select-option>
+						</ion-select>
+					</ion-item>
+					<ion-item class="container">
+						<ion-label position="stacked" class="title-opcion">3. Tipo de Documento</ion-label>
+						<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.tipodocumento"
+							[ngStyle]="{marginTop:'10px'}" (ionChange)="changeTipodocumento()">
+							<ion-select-option value="DNI">DNI</ion-select-option>
+							<ion-select-option value="RUC">RUC</ion-select-option>
+							<ion-select-option value="CARNET DE EXTRANJERIA">CARNET DE EXTRANJERIA</ion-select-option>
+						</ion-select>
+					</ion-item>
+					<ion-item class="container">
+						<ion-label position="stacked" class="title-opcion">4. Número de Documento</ion-label>
+						<ion-input [(ngModel)]="o.nrodocumento" (keyup)="searchDNI($event)" (keypress)="numberOnlyValidation($event)"></ion-input>
+						<!-- <input placeholder="Search" #input> -->
+					</ion-item>
+					<ion-item class="container">
+						<ion-label position="stacked" class="title-opcion">5. Apellidos y Nombres y/o Razón
+							Social</ion-label>
+						<ion-input [(ngModel)]="o.apenombres" [disabled]="isDisabled"></ion-input>
+					</ion-item>
+					<ng-template [ngIf]="o.tipopersona==='JURIDICA'">
+						<ion-item class="container">
+							<ion-label position="stacked" class="title-opcion">6. Representante Legal</ion-label>
+							<ion-input [(ngModel)]="o.representante"></ion-input>
+						</ion-item>
+					</ng-template>
+					<ion-item class="container">
+						<ion-label position="stacked" class="title-opcion">7. Domicilio Real o Procesal</ion-label>
+						<ion-input [(ngModel)]="o.domicilio" [disabled]="isDisabled"></ion-input>
+					</ion-item>
+				</ng-template>
+				<ion-item class="container">
+					<ion-label position="stacked" class="title-opcion">8. Teléfono <span
+							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
+					<ion-input [(ngModel)]="o.telefono" (keypress)="numberOnlyValidation($event)"></ion-input>
+				</ion-item>
+				<ion-item class="container">
+					<ion-label position="stacked" class="title-opcion">9. Correo Electrónico <span
+							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
+					<ion-input [(ngModel)]="o.email"></ion-input>
+				</ion-item>
+				<ion-item class="container">
+					<ion-label position="stacked" class="title-opcion">10. Es Servidor/a del(a) Gobierno Regional de
+						Ancash? <span
+							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
+					<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.funcionario"
+						[ngStyle]="{marginTop:'10px'}">
+						<ion-select-option value="0">NO</ion-select-option>
+						<ion-select-option value="1">SI</ion-select-option>
+					</ion-select>
+				</ion-item>
+				<ng-template [ngIf]="o.funcionario==='1'">
+					<ion-item class="container">
+						<ion-label position="stacked" class="title-opcion">11. Órgano y/o Área en que labora</ion-label>
+						<ion-input [(ngModel)]="o.organo"></ion-input>
+					</ion-item>
+					<ion-item class="container">
+						<ion-label position="stacked" class="title-opcion">12. Cargo que desempeña</ion-label>
+						<ion-input [(ngModel)]="o.cargo"></ion-input>
+					</ion-item>
+				</ng-template>
+				<ion-item class="container">
+					<ion-label position="stacked" class="title-opcion">13. Vínculo con el/los denunciado/s <span
+							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
+					<ion-textarea maxlength="500" [autoGrow]="true" [(ngModel)]="o.vinculo"></ion-textarea>
+				</ion-item>
+			</ion-item-group>
+			<ion-item-group>
+				<ion-item-divider>
+					<ion-label>
+						II. DATOS DEL DENUNCIADO/A
+					</ion-label>
+				</ion-item-divider>
+				<ion-item class="container">
+					<ion-label position="stacked" class="title-opcion">14. Motivo de la denuncia <span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
 					<ion-radio-group [(ngModel)]="o.motivo_id"
 						[ngStyle]="{width: '-webkit-fill-available', marginTop: '12px'}">
 						<div *ngFor="let item of types">
-							<ion-item>
+							<ion-item class="container">
 								<ion-radio [value]="item.id" [ngStyle]="{marginRight: '15px'}"></ion-radio>
 								<ion-label
 									[ngStyle]="{whiteSpace: 'unset', fontWeight: 'bold',fontSize: '14px'}">{{item.titulo}}
@@ -73,86 +154,7 @@
 						</div>
 					</ion-radio-group>
 				</ion-item>
-				<ng-template [ngIf]="o.anonimo==='0'">
-					<ion-item>
-						<ion-label position="stacked" class="title-opcion">3. Tipo de Persona</ion-label>
-						<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.tipopersona"
-							[ngStyle]="{marginTop:'10px'}">
-							<ion-select-option value="DNI">NATURAL</ion-select-option>
-							<ion-select-option value="RUC">JURIDICA</ion-select-option>
-						</ion-select>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked" class="title-opcion">4. Tipo de Documento</ion-label>
-						<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.tipodocumento"
-							[ngStyle]="{marginTop:'10px'}">
-							<ion-select-option value="DNI">DNI</ion-select-option>
-							<ion-select-option value="RUC">RUC</ion-select-option>
-							<ion-select-option value="CARNET DE EXTRANJERIA">CARNET DE EXTRANJERIA</ion-select-option>
-						</ion-select>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked" class="title-opcion">5. Número de Documento</ion-label>
-						<ion-input [(ngModel)]="o.nrodocumento"></ion-input>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked" class="title-opcion">6. Apellidos y Nombres y/o Razón
-							Social</ion-label>
-						<ion-input [(ngModel)]="o.apenombres"></ion-input>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked" class="title-opcion">7. Representante Legal</ion-label>
-						<ion-input [(ngModel)]="o.representante"></ion-input>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked" class="title-opcion">8. Domicilio Real o Procesal</ion-label>
-						<ion-input [(ngModel)]="o.domicilio"></ion-input>
-					</ion-item>
-				</ng-template>
-				<ion-item>
-					<ion-label position="stacked" class="title-opcion">9. Teléfono <span
-							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
-					<ion-input [(ngModel)]="o.telefono"></ion-input>
-				</ion-item>
-				<ion-item>
-					<ion-label position="stacked" class="title-opcion">10. Correo Electrónico <span
-							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
-					<ion-input [(ngModel)]="o.email"></ion-input>
-				</ion-item>
-				<ion-item>
-					<ion-label position="stacked" class="title-opcion">11. Es Servidor/a del(a) Gobierno Regional de
-						Ancash? <span
-							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
-					<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.funcionario"
-						[ngStyle]="{marginTop:'10px'}">
-						<ion-select-option value="0">NO</ion-select-option>
-						<ion-select-option value="1">SI</ion-select-option>
-					</ion-select>
-				</ion-item>
-				<ng-template [ngIf]="o.funcionario==='1'">
-					<ion-item>
-						<ion-label position="stacked" class="title-opcion">12. Órgano y/o Área en que labora</ion-label>
-						<ion-input [(ngModel)]="o.organo"></ion-input>
-					</ion-item>
-					<ion-item>
-						<ion-label position="stacked" class="title-opcion">13. Cargo que desempeña</ion-label>
-						<ion-input [(ngModel)]="o.cargo"></ion-input>
-					</ion-item>
-				</ng-template>
-				<ion-item>
-					<ion-label position="stacked" class="title-opcion">14. Vínculo con el/los denunciado/s <span
-							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
-					<ion-textarea maxlength="500" [autoGrow]="true" [(ngModel)]="o.vinculo"></ion-textarea>
-				</ion-item>
-			</ion-item-group>
-			<ion-item-group>
-				<ion-item-divider>
-					<ion-label>
-						II. DATOS DEL DENUNCIADO/A
-					</ion-label>
-				</ion-item-divider>
-
-				<ion-item>
+				<ion-item class="container">
 					<ion-label position="stacked" class="title-opcion">15. Seleccione la Oficina<span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
 					<ion-select interface="action-sheet" placeholder="Seleccione" [(ngModel)]="o.oficina"
@@ -162,7 +164,7 @@
 					</ion-select>
 				</ion-item>
 
-				<!-- <ion-item>
+				<!-- <ion-item class="container">
 					<ion-label position="stacked" class="title-opcion">16. Ingrese los Apellidos y Nombres del Denunciado/a<span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
 					<ion-input [(ngModel)]="o.personal"></ion-input>
@@ -173,13 +175,13 @@
 					</ion-select> 
 				</ion-item> -->
 
-				<ion-item>
+				<ion-item class="container">
 					<ion-label position="stacked" class="title-opcion">16. Especificar los Nombres y
 						Apellidos <span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
 					<ion-input [(ngModel)]="o.apenombresdenunciado"></ion-input>
 				</ion-item>
-				<ion-item>
+				<ion-item class="container">
 					<ion-label position="stacked" class="title-opcion">17. Especificar Cargo que desempeña <span
 							[ngStyle]="{color:'red', fontWeight: 'bold', fontSize: '22px'}">*</span></ion-label>
 					<ion-input [(ngModel)]="o.cargodenunciado"></ion-input>
@@ -192,7 +194,7 @@
 						III. DESCRIPCIÓN DE LOS HECHOS DENUNCIADOS
 					</ion-label>
 				</ion-item-divider>
-				<ion-item>
+				<ion-item class="container">
 					<ion-label position="stacked" class="title-opcion">18. (En este Ítem el recurrente deberá consignar
 						los actos materia de denuncia, estos deben ser expuestos en forma detallada y coherente,
 						incluyendo la identificación de los autores de los hechos denunciados de conocerte) <span
@@ -208,8 +210,8 @@
 				</ion-item-divider>
 				<ion-label position="stacked" [ngStyle]="{margin: '10px',fontSize: '15px'}">La denuncia podrá
 					acompañarse de documentación original o copia que le de sustento.</ion-label>
-				<ion-item>
-					<ion-label position="stacked" class="title-opcion">18. Documentación Probatoria
+				<ion-item class="container">
+					<ion-label position="stacked" class="title-opcion">19. Documentación Probatoria
 						Peso máximo: 10 MB en total, solo se aceptan formatos rar, zip, mp3, wma, mp4, wmv,
 						pdf, doc, docx, txt, xls, xlsx, xlsm, csv, jpg, jpeg, png, tif y bmp.</ion-label>
 
@@ -226,12 +228,12 @@
 					</div>
 				</ion-item>
 			</ion-item-group>
-			<ion-item>
+			<ion-item class="container">
 				<ion-checkbox slot="start" [(ngModel)]="o.aceptado"></ion-checkbox>
 				<ion-label>Declaro bajo juramento que los datos ingresados en este formulario son verdaderos y
 					están sujetos a lo establecido en los articulos 51 y 67 del TUO de la Ley N° 27444</ion-label>
 			</ion-item>
-			<ion-item>
+			<ion-item class="container">
 				<ion-button [disabled]="!o.aceptado" fill="solid" (click)="send()">
 					<ion-icon slot="end" name="send"></ion-icon>
 					Enviar
@@ -251,7 +253,7 @@
 					Gobierno Regional de Ancash - Trasparencia.
 				</ion-card-content>
 			</ion-card>
-			<ion-item>
+			<ion-item class="container">
 				<ion-button [disabled]="!o.aceptado" fill="solid" (click)="sended=false;o={}">
 					<ion-icon slot="start" name="pencil"></ion-icon>
 					Registrar una nueva denuncia.

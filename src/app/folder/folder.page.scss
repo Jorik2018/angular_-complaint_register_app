@@ -30,6 +30,23 @@ ion-textarea {
   white-space: unset;
 }
 
+.container {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * .5) !important;
+  padding-left: calc(var(--bs-gutter-x) * .5) !important;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+ion-loading.custom-loading {
+  --background: #e3edff;
+  --spinner-color: #1c6dff;
+
+  color: #1c6dff;
+}
+
 .color-gore {
   --ion-background-color: #0f62ac;
   // background: #0f62ac;

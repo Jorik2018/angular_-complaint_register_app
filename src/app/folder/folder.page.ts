@@ -1,16 +1,20 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpEventType, HttpParams } from '@angular/common/http';
 import { LoadingController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../environments/environment';
+import { fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-folder',
 	templateUrl: './folder.page.html',
 	styleUrls: ['./folder.page.scss'],
 })
-export class FolderPage implements OnInit {
+export class FolderPage implements OnInit, AfterViewInit {
+
+
 
 	public folder: string = 'Gobierno Regional de Ancash';
 	@ViewChild("fileDropRef", { static: false })
@@ -18,6 +22,7 @@ export class FolderPage implements OnInit {
 	files: any[] = [];
 	o: any = { anonimo: null };
 	sended: boolean = false;
+	isDisabled: boolean = true;
 
 	types: any[] = [];
 
@@ -25,19 +30,31 @@ export class FolderPage implements OnInit {
 
 	personals: any[] = [];
 
+	input?: ElementRef;
+
+	@ViewChild('input') set content(content: ElementRef) {
+		if (content) { // initially setter gets called with undefined
+
+			console.log(content);
+
+
+			this.input = content;
+			this.ngAfterViewInit();
+		}
+	}
 
 	// constructor(private activatedRoute: ActivatedRoute) { }
 
 	ngOnInit() {
 		var me = this;
-		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/motivo').subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/motivo').subscribe(data => {
 			me.types = (data as any[]);
 			console.log(data);
 		}, (error) => {
 			console.log(error);
 		})
 
-		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/oficina').subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/oficina').subscribe(data => {
 			me.oficinas = (data as any[]);
 			console.log(data);
 		}, (error) => {
@@ -51,12 +68,68 @@ export class FolderPage implements OnInit {
 	changeOficina() {
 		var me = this;
 
-		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/personal/' + this.o.oficina).subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/personal/' + this.o.oficina).subscribe(data => {
 			me.personals = (data as any[]);
 			console.log(data);
 		}, (error) => {
 			console.log(error);
 		})
+	}
+
+	searchDNI(event: any) {
+		if (this.o.tipodocumento == "DNI") {
+			if (this.o.nrodocumento.length == 8) {
+				this.simpleLoader();
+				const body = { dni: this.o.nrodocumento };
+				this.http.post<any>('http://web.regionancash.gob.pe/api/reniec/', body).subscribe(data => {
+					if (data) {
+						this.dismissLoader();
+						if (data.coResultado == '0000') {
+							this.o.apenombres = data.datosPersona.prenombres + ' ' + data.datosPersona.apPrimer + ' ' + data.datosPersona.apSegundo;
+							this.o.domicilio = data.datosPersona.direccion;
+							this.isDisabled = true;
+						} else {
+							this.toastr.warning("No se encontro sus datos en la RENIEC, por favor ingrese sus datos correctamente.");
+							this.isDisabled = false;
+							this.o.domicilio = '';
+							this.o.apenombres = '';
+						}
+					}
+				});
+
+			}
+		} else {
+			this.isDisabled = false;
+			this.o.domicilio = '';
+			this.o.apenombres = '';
+		}
+	}
+
+	simpleLoader() {
+		this.loadingCtrl.create({
+			message: 'Cargando datos personales, Espere...'
+		}).then((response) => {
+			response.present();
+		});
+	}
+
+	dismissLoader() {
+		this.loadingCtrl.dismiss().then((response) => {
+			console.log('Loader closed!', response);
+		}).catch((err) => {
+			console.log('Error occured : ', err);
+		});
+	}
+
+	changeTipodocumento() {
+		this.o.nrodocumento = '';
+		if (this.o.tipodocumento != "DNI") {
+			this.isDisabled = false;
+			this.o.domicilio = '';
+			this.o.apenombres = '';
+		} else {
+			this.isDisabled = true;
+		}
 	}
 
 	onFileDropped($event: any) {
@@ -153,7 +226,7 @@ export class FolderPage implements OnInit {
 		const loading = await this.loadingCtrl.create({ message: 'Enviando...', });
 		loading.present();
 		console.log(me.o);
-		me.http.post<any>(environment.APP_BASE_URL + '/api/denuncia/api/addDenuncia', me.o).subscribe(data => {
+		me.http.post<any>(environment.APP_BASE_URL + '/api/addDenuncia', me.o).subscribe(data => {
 			if (data.result == 1) {
 				loading.dismiss();
 				me.sended = true;
@@ -210,7 +283,6 @@ export class FolderPage implements OnInit {
 						if (event!.total) {
 							let p = (event.loaded / event.total) * 100;
 
-
 							callback({ upload: event.loaded, total: event.total, msg: p.toFixed(2) + '% (' + event.loaded + '/' + event!.total + ')' });
 						}
 						break;
@@ -239,11 +311,35 @@ export class FolderPage implements OnInit {
 		console.log(msg);
 	}
 
-}
+	ngAfterViewInit() {
+		setTimeout(() => {
+			//alert(this.input);
+			// server-side search
+			if (this.input) {
 
-var o_ = {
+				/*fromEvent(this.input.nativeElement, 'keyup')
+					.pipe(
+						//filter(Boolean),
+						debounceTime(1000),
+						distinctUntilChanged(),
+						tap((text) => {
+							//console.log(this.input!.nativeElement.value)
+						})
+					)
+					.subscribe();*/
+			}
+		}, 2050);
+	}
 
-	"": "Ninguno",
-	"documentacion": "prueba.pdf",
-	"motivo_id": "4"
+	numberOnlyValidation(event: any) {
+		const pattern = /[0-9.,]/;
+		let inputChar = String.fromCharCode(event.charCode);
+
+		if (!pattern.test(inputChar)) {
+			// invalid character, prevent input
+			event.preventDefault();
+		}
+	}
+
+
 }
