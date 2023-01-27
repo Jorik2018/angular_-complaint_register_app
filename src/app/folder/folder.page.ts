@@ -47,14 +47,14 @@ export class FolderPage implements OnInit, AfterViewInit {
 
 	ngOnInit() {
 		var me = this;
-		me.http.get(environment.APP_BASE_URL + '/api/motivo').subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/motivo').subscribe(data => {
 			me.types = (data as any[]);
 			console.log(data);
 		}, (error) => {
 			console.log(error);
 		})
 
-		me.http.get(environment.APP_BASE_URL + '/api/oficina').subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/oficina').subscribe(data => {
 			me.oficinas = (data as any[]);
 			console.log(data);
 		}, (error) => {
@@ -68,7 +68,7 @@ export class FolderPage implements OnInit, AfterViewInit {
 	changeOficina() {
 		var me = this;
 
-		me.http.get(environment.APP_BASE_URL + '/api/personal/' + this.o.oficina).subscribe(data => {
+		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/personal/' + this.o.oficina).subscribe(data => {
 			me.personals = (data as any[]);
 			console.log(data);
 		}, (error) => {
@@ -226,7 +226,7 @@ export class FolderPage implements OnInit, AfterViewInit {
 		const loading = await this.loadingCtrl.create({ message: 'Enviando...', });
 		loading.present();
 		console.log(me.o);
-		me.http.post<any>(environment.APP_BASE_URL + '/api/addDenuncia', me.o).subscribe(data => {
+		me.http.post<any>(environment.APP_BASE_URL + '/api/denuncia/api/addDenuncia', me.o).subscribe(data => {
 			if (data.result == 1) {
 				loading.dismiss();
 				me.sended = true;
