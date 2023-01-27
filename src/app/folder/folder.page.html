@@ -61,7 +61,7 @@
 						<ion-select interface="popover" placeholder="Seleccione" [(ngModel)]="o.tipopersona"
 							[ngStyle]="{marginTop:'10px'}">
 							<ion-select-option value="DNI">NATURAL</ion-select-option>
-							<ion-select-option value="JURIDICA">JURIDICA</ion-select-option>
+							<ion-select-option value="RUC">RUC</ion-select-option>
 						</ion-select>
 					</ion-item>
 					<ion-item class="container">
@@ -83,7 +83,7 @@
 							Social</ion-label>
 						<ion-input [(ngModel)]="o.apenombres" [disabled]="isDisabled"></ion-input>
 					</ion-item>
-					<ng-template [ngIf]="o.tipopersona==='JURIDICA'">
+					<ng-template [ngIf]="o.tipopersona==='RUC'">
 						<ion-item class="container">
 							<ion-label position="stacked" class="title-opcion">6. Representante Legal</ion-label>
 							<ion-input [(ngModel)]="o.representante"></ion-input>

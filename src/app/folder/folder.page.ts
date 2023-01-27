@@ -30,6 +30,8 @@ export class FolderPage implements OnInit, AfterViewInit {
 
 	personals: any[] = [];
 
+	datosRENIEC: any[] = [];
+
 	input?: ElementRef;
 
 	@ViewChild('input') set content(content: ElementRef) {
@@ -67,7 +69,6 @@ export class FolderPage implements OnInit, AfterViewInit {
 
 	changeOficina() {
 		var me = this;
-
 		me.http.get(environment.APP_BASE_URL + '/api/denuncia/api/personal/' + this.o.oficina).subscribe(data => {
 			me.personals = (data as any[]);
 			console.log(data);
@@ -78,18 +79,21 @@ export class FolderPage implements OnInit, AfterViewInit {
 
 	searchDNI(event: any) {
 		if (this.o.tipodocumento == "DNI") {
-			if (this.o.nrodocumento.length == 8) {
+			if (this.o.nrodocumento.length == '8') {
 				this.simpleLoader();
 				const body = { dni: this.o.nrodocumento };
-				this.http.post<any>('https://web.regionancash.gob.pe/api/reniec/', body).subscribe(data => {
+				this.http.get<any>(environment.APP_BASE_URL + '/api/reniec/Consultar?nuDniConsulta=' + this.o.nrodocumento + '&out=json').subscribe(data => {
+					var datos = data.consultarResponse.return;
 					if (data) {
 						this.dismissLoader();
-						if (data.coResultado == '0000') {
-							this.o.apenombres = data.datosPersona.prenombres + ' ' + data.datosPersona.apPrimer + ' ' + data.datosPersona.apSegundo;
-							this.o.domicilio = data.datosPersona.direccion;
+						if (datos.coResultado == '0000') {
+							this.o.apenombres = datos.datosPersona.prenombres + ' ' + datos.datosPersona.apPrimer + ' ' + datos.datosPersona.apSegundo;
+							this.o.domicilio = datos.datosPersona.direccion;
 							this.isDisabled = true;
+							this.toastr.success(datos.deResultado);
+
 						} else {
-							this.toastr.warning("No se encontro sus datos en la RENIEC, por favor ingrese sus datos correctamente.");
+							this.toastr.warning(datos.deResultado);
 							this.isDisabled = false;
 							this.o.domicilio = '';
 							this.o.apenombres = '';
@@ -104,7 +108,6 @@ export class FolderPage implements OnInit, AfterViewInit {
 			this.o.apenombres = '';
 		}
 	}
-
 	simpleLoader() {
 		this.loadingCtrl.create({
 			message: 'Cargando datos personales, Espere...'
@@ -317,16 +320,16 @@ export class FolderPage implements OnInit, AfterViewInit {
 			// server-side search
 			if (this.input) {
 
-				/*fromEvent(this.input.nativeElement, 'keyup')
+				fromEvent(this.input.nativeElement, 'keyup')
 					.pipe(
 						//filter(Boolean),
 						debounceTime(1000),
 						distinctUntilChanged(),
 						tap((text) => {
-							//console.log(this.input!.nativeElement.value)
+							console.log(this.input!.nativeElement.value)
 						})
 					)
-					.subscribe();*/
+					.subscribe();
 			}
 		}, 2050);
 	}
