@@ -81,7 +81,7 @@ export class FolderPage implements OnInit, AfterViewInit {
 			if (this.o.nrodocumento.length == 8) {
 				this.simpleLoader();
 				const body = { dni: this.o.nrodocumento };
-				this.http.post<any>('http://web.regionancash.gob.pe/api/reniec/', body).subscribe(data => {
+				this.http.post<any>('https://web.regionancash.gob.pe/api/reniec/', body).subscribe(data => {
 					if (data) {
 						this.dismissLoader();
 						if (data.coResultado == '0000') {
