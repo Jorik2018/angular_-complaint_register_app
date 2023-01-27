@@ -75,7 +75,7 @@
 					</ion-item>
 					<ion-item class="container">
 						<ion-label position="stacked" class="title-opcion">4. Número de Documento</ion-label>
-						<ion-input [(ngModel)]="o.nrodocumento" (keyup)="searchDNI($event)" (keypress)="numberOnlyValidation($event)"></ion-input>
+						<ion-input [(ngModel)]="o.nrodocumento" (ionChange)="searchDNI($event)" (keypress)="numberOnlyValidation($event)"></ion-input>
 						<!-- <input placeholder="Search" #input> -->
 					</ion-item>
 					<ion-item class="container">

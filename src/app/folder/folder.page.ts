@@ -80,6 +80,7 @@ export class FolderPage implements OnInit, AfterViewInit {
 	searchDNI(event: any) {
 		if (this.o.tipodocumento == "DNI") {
 			if (this.o.nrodocumento.length == '8') {
+				console.log(this.o.nrodocumento.length);
 				this.simpleLoader();
 				const body = { dni: this.o.nrodocumento };
 				this.http.get<any>(environment.APP_BASE_URL + '/api/reniec/Consultar?nuDniConsulta=' + this.o.nrodocumento + '&out=json').subscribe(data => {
